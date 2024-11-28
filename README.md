@@ -92,7 +92,7 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
     - **URL:** `/signout`
     - **Method:** POST
     - **Request Body:**
-      Authorization token: Bearer <JWT_TOKEN>
+     - `Authorization token: Bearer <JWT_TOKEN>`
       
 
 ### Student Endpoints
