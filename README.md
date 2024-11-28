@@ -92,21 +92,7 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
     - **URL:** `/signout`
     - **Method:** POST
     - **Request Body:**
-      ```json
-      {
-        "username": "your_username",
-        "password": "your_password",
-        "role": "STUDENT" //optional (default)
-      }
-      ```
-
-    - **Response:**
-      ```json
-      {
-        "message": "User registered successfully",
-        "status": true
-      }
-      ```
+      Authorization token: Bearer <JWT_TOKEN>
       
 
 ### Student Endpoints
