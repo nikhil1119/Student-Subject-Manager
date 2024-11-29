@@ -2,46 +2,49 @@
 
 ## Description
 
-This project is a basic Spring Boot application that demonstrates the use of Spring MVC, Spring Security, and Spring Data JPA. The application manages students and subjects with a many-to-many relationship between them. The project includes a REST API for creating students, getting a list of all students, and getting a list of all subjects. It also uses JWT for authentication and authorization with two roles: student and admin.
+This is a **Spring Boot application** designed to manage students and subjects with a **many-to-many relationship**. It showcases the use of **Spring MVC**, **Spring Security**, and **Spring Data JPA**. The project includes a REST API for creating students and subjects, viewing lists of students and subjects, and using **JWT** for authentication and authorization. The system supports **role-based access control**, with two roles: **student** and **admin**.
 
-## Technologies Used
-
-- Java version 17
-- Spring Boot 3.2.5
-- Spring MVC
-- Spring Security 6
-- Spring Data JPA
-- JWT (jjwt-api, jjwt-impl, jjwt-jackson)
-- H2 In-Memory Database
+---
 
 ## Features
 
-- Register user(admin is coming soon)
-- Create a student(for admin only)
-- Create subject(for admin only)
-- Get a list of all students
-- Get a list of all subjects
-- JWT-based authentication and authorization
-- Role-based access control for student and admin
+- **User Authentication**:
+  - Signup and Login (JWT-based).
+  - Secure logout.
+- **Role-Based Access Control**:
+  - **Student Role**: Can view the list of subjects.
+  - **Admin Role**: Can create students and subjects, and view all students.
+- **API Functionality**:
+  - Add new students and subjects (Admin-only).
+  - View all students and subjects.
+- **Secure REST APIs** with JWT and role-based permissions.
+
+---
+
+## Technologies Used
+
+- **Backend**: Java 17, Spring Boot 3.2.5
+- **Frameworks**: Spring MVC, Spring Security 6, Spring Data JPA
+- **Database**: H2 In-Memory Database
+- **Authentication**: JWT (jjwt-api, jjwt-impl, jjwt-jackson)
+
+---
 
 ## API Endpoints
 
-### User Endpoints()
-#### (First create user and sign in before accessing any api endpoint as they require authorization)
+### **User Endpoints**
 
-- **Signup**
-    - **URL:** `/signup`
-    - **Method:** POST
-    - **Request Body:**
+1. **Signup** (`/signup`): Register a new user (default role: Student).
+    - **Method**: POST  
+    - **Request Body**:
       ```json
       {
         "username": "your_username",
         "password": "your_password",
-        "role": "STUDENT" //optional (default)
+        "role": "STUDENT" // optional, default is STUDENT
       }
       ```
-
-    - **Response:**
+    - **Response**:
       ```json
       {
         "message": "User registered successfully",
@@ -49,60 +52,36 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
       }
       ```
 
-  - As of now User can only register for student role. Admin role registration is coming soon.
-
-
-- **Login (Obtain JWT Token)**
-    - **URL:** `/signin`
-    - **Method:** POST
-    - **Request Body:**
+2. **Login** (`/signin`): Obtain a JWT token for authorization.
+    - **Method**: POST  
+    - **Request Body**:
       ```json
       {
         "username": "your_username",
         "password": "your_password"
       }
       ```
-      
-      - for admin
-      ```json
-      {
-      "username": "admin",
-      "password": "adminPass"
-      }
-      ```
-
-      - preregistered student (if you don't want to create one)
-      ```json
-      {
-      "username": "student1",
-      "password": "password1"
-      }
-      ```
-      
-    - **Response:**
+    - **Response**:
       ```json
       {
         "jwtToken": "<JWT_TOKEN>",
         "username": "your_username",
-        "roles": ["ROLE_STUDENT/ROLE_ADMIN"] //default role
+        "roles": ["ROLE_STUDENT/ROLE_ADMIN"]
       }
       ```
 
-- **Logout**
-    - **URL:** `/signout`
-    - **Method:** POST
-    - **Request Body:**
-     - `Authorization token: Bearer <JWT_TOKEN>`
-      
+3. **Logout** (`/signout`): Securely log out the user.
+    - **Method**: POST
+    - **Headers**: `Authorization: Bearer <JWT_TOKEN>`
 
-### Student Endpoints
+---
 
-- **Create a Student (Admin only)**
-    - **URL:** `/api/students/create`
-    - **Method:** POST
-    - **Headers:**
-        - `Authorization: Bearer <JWT_TOKEN>`
-    - **Request Body:**
+### **Admin-Only Endpoints**
+
+1. **Create Student** (`/api/students/create`): Add a new student with subjects.
+    - **Method**: POST  
+    - **Headers**: `Authorization: Bearer <JWT_TOKEN>`  
+    - **Request Body**:
       ```json
       {
         "name": "Jane Doe",
@@ -113,7 +92,7 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
         ]
       }
       ```
-    - **Response:**
+    - **Response**:
       ```json
       {
         "id": 1,
@@ -126,12 +105,10 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
       }
       ```
 
-- **Get List of All Students (Admin only)**
-    - **URL:** `/api/students/get-all`
-    - **Method:** GET
-    - **Headers:**
-        - `Authorization: Bearer <JWT_TOKEN>`
-    - **Response:**
+2. **View All Students** (`/api/students/get-all`): Get a list of all students.
+    - **Method**: GET  
+    - **Headers**: `Authorization: Bearer <JWT_TOKEN>`  
+    - **Response**:
       ```json
       [
         {
@@ -147,14 +124,14 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
       ]
       ```
 
-### Subject Endpoints
+---
 
-- **Get List of All Subjects (Student and Admin)**
-    - **URL:** `/api/subjects/get-all`
-    - **Method:** GET
-    - **Headers:**
-        - `Authorization: Bearer <JWT_TOKEN>`
-    - **Response:**
+### **Shared Endpoints (Admin and Student)**
+
+1. **View All Subjects** (`/api/subjects/get-all`): Get a list of all subjects.
+    - **Method**: GET  
+    - **Headers**: `Authorization: Bearer <JWT_TOKEN>`  
+    - **Response**:
       ```json
       [
         {"id": 1, "name": "English"},
@@ -163,18 +140,16 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
       ]
       ```
 
-- **Create a Subject (Admin only)**
-    - **URL:** `/api/subjects/create`
-    - **Method:** POST
-    - **Headers:**
-        - `Authorization: Bearer <JWT_TOKEN>`
-    - **Request Body:**
+2. **Create Subject** (`/api/subjects/create`): Add a new subject (Admin-only).
+    - **Method**: POST  
+    - **Headers**: `Authorization: Bearer <JWT_TOKEN>`  
+    - **Request Body**:
       ```json
       {
         "name": "Physics"
       }
       ```
-    - **Response:**
+    - **Response**:
       ```json
       {
         "id": 3,
@@ -182,46 +157,56 @@ This project is a basic Spring Boot application that demonstrates the use of Spr
       }
       ```
 
+---
+
 ## Security
 
-### Roles and Permissions
+- **JWT Authentication**:  
+  - Secures API endpoints by requiring a token in the `Authorization` header.
+  - Example: `Authorization: Bearer <JWT_TOKEN>`
+- **Roles**:
+  - **Student**: Limited access (view subjects).
+  - **Admin**: Full access (manage students and subjects).
 
-- **Student Role**
-    - Can view the list of subjects
-
-- **Admin Role**
-    - Can create a student
-    - Can view the list of subjects
-    - Can view the list of students
-
-### JWT Authentication
-
-- JWT is used for securing the API endpoints.
-- Users can log in with their credentials to obtain a JWT token, which should be included in the `Authorization` header of subsequent requests.
-- Select `Bearer Token` in `Auth Type`
+---
 
 ## Database Configuration
 
-- The project uses an H2 in-memory database for simplicity.
-- The `schema.sql` file is used to initialize the database schema.
+- Uses **H2 In-Memory Database** for fast setup.
+- The database schema is initialized using the `schema.sql` file.
+
+---
 
 ## Setup and Running the Application
 
-1. **Clone the repository:**
-   ```js
+1. **Clone the Repository**:
+   ```bash
    git clone <repository_url>
    cd <repository_directory>
-   ```
 
-2. **Build Command**
-    ```js
-    ./mvnw clean install
-   ```
+## Default Users
 
-3. **Run Command**
-    ```js
-    ./mvnw spring-boot:run
-   ```
-   
-- You can use IDE (preferably IntelliJ IDEA) to run the application if you have one installed already (easy to run) 
-   
+- **Admin**:
+    ```json
+    {
+        "username": "admin",
+        "password": "adminPass"
+    }
+    ```
+
+- **Student**:
+    ```json
+    {
+        "username": "student1",
+        "password": "password1"
+    }
+    ```
+
+---
+
+## Future Enhancements
+
+- Add **Admin Registration** during signup.
+- Add the UI for better user experience.
+- Add more granular permissions for specific features.
+- Assigning roles
